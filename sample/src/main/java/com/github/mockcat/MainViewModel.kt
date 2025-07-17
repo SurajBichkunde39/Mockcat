@@ -11,8 +11,11 @@ import kotlinx.coroutines.launch
 // Represents the different states our UI can be in
 sealed class UserUiState {
     object Idle : UserUiState()
+
     object Loading : UserUiState()
+
     data class Success(val user: User) : UserUiState()
+
     data class Error(val message: String) : UserUiState()
 }
 

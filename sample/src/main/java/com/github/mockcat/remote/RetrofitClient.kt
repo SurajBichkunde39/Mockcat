@@ -14,23 +14,26 @@ object RetrofitClient {
     private val json = Json { ignoreUnknownKeys = true }
 
     // OkHttpClient
-    private val okHttpClient = OkHttpClient.Builder()
-        .addInterceptor(HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        })
-        .build()
+    private val okHttpClient =
+        OkHttpClient
+            .Builder()
+            .addInterceptor(
+                HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                }
+            ).build()
 
     // Public ApiService instance
     val api: ApiService by lazy {
-        Retrofit.Builder()
+        Retrofit
+            .Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(
                 json.asConverterFactory(
                     "application/json; charset=UTF8".toMediaType()
                 )
-            )
-            .build()
+            ).build()
             .create(ApiService::class.java)
     }
 }

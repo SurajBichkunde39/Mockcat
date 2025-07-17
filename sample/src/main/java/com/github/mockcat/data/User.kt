@@ -4,9 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ApiResponse(
-    val data: User
-)
+data class ApiResponse(val data: User)
 
 @Serializable
 data class User(

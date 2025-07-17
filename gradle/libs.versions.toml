@@ -14,6 +14,9 @@ kotlinxSerialization = "1.9.0"
 converterKotlinxSerialization = "3.0.0"
 coil = "2.7.0"
 okhttp = "5.1.0"
+detekt = "1.23.8"
+ktLintGradle = "13.0.0"
+leakcanary = "2.14"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,6 +39,7 @@ converter-kotlinx-serialization = { group = "com.squareup.retrofit2", name = "co
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+leakcanary-android = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
 
 
 [plugins]
@@ -43,4 +47,6 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktLintGradle" }
 

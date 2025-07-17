@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.ktlint)
 }
 
 android {
@@ -69,4 +71,7 @@ dependencies {
 
     // Image Loading
     implementation(libs.coil.compose)
+
+    // leak
+    implementation(libs.leakcanary.android)
 }

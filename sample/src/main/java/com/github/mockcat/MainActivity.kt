@@ -17,7 +17,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -53,13 +52,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun UserScreen(
-    modifier: Modifier = Modifier,
-    uiState: UserUiState,
-    onFetchClicked: () -> Unit
-) {
+fun UserScreen(modifier: Modifier = Modifier, uiState: UserUiState, onFetchClicked: () -> Unit) {
     Column(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -78,7 +74,11 @@ fun UserScreen(
                     UserDetails(user = uiState.user)
                 }
                 is UserUiState.Error -> {
-                    Text("Error: ${uiState.message}", color = MaterialTheme.colorScheme.error, fontSize = 16.sp)
+                    Text(
+                        "Error: ${uiState.message}",
+                        color = MaterialTheme.colorScheme.error,
+                        fontSize = 16.sp
+                    )
                 }
             }
         }
@@ -94,11 +94,15 @@ fun UserScreen(
 
 @Composable
 fun UserDetails(user: User) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         AsyncImage(
             model = user.avatar,
             contentDescription = "User Avatar",
-            modifier = Modifier
+            modifier =
+            Modifier
                 .size(128.dp)
                 .clip(CircleShape),
             contentScale = ContentScale.Crop
