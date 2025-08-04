@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "sample"
 include(":sample")
- 
+include(":mockcat-core")
