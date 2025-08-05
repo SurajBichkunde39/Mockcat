@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -20,14 +21,17 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.github.mockcat.core.api.Mockcat
 import com.github.mockcat.data.User
 import com.github.mockcat.ui.theme.SampleTheme
 
@@ -39,31 +43,54 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SampleTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    UserScreen(
-                        modifier = Modifier.padding(innerPadding),
-                        uiState = viewModel.uiState.collectAsState().value,
-                        onFetchClicked = { viewModel.fetchUser() }
-                    )
-                }
+                UserScreen(viewModel)
             }
         }
     }
 }
 
 @Composable
-fun UserScreen(modifier: Modifier = Modifier, uiState: UserUiState, onFetchClicked: () -> Unit) {
-    Column(
-        modifier =
-        modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+fun UserScreen(mainViewModel: MainViewModel) {
+    val uiState by mainViewModel.uiState.collectAsState()
+    val context = LocalContext.current
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        floatingActionButton = {
+            Column {
+                Button(onClick = {
+                    Mockcat.createShortcut(context)
+                }) {
+                    Text(text = "Create Mockcat Shortcut")
+                }
+
+                Button(onClick = {
+                    val intent = Mockcat.getLaunchIntent(context)
+                    context.startActivity(intent)
+                }) {
+                    Text(text = "Launch Mockcat")
+                }
+            }
+        },
+        bottomBar = {
+            Button(
+                onClick = mainViewModel::fetchUser,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding(),
+                enabled = uiState !is UserUiState.Loading
+            ) {
+                Text(text = "Fetch User Data", fontSize = 16.sp)
+            }
+        }
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
             // Use a 'when' block to display the correct UI for the current state
-            when (uiState) {
+            when (val currentState = uiState) {
                 is UserUiState.Idle -> {
                     Text("Click the button to fetch a user.", fontSize = 18.sp)
                 }
@@ -71,23 +98,16 @@ fun UserScreen(modifier: Modifier = Modifier, uiState: UserUiState, onFetchClick
                     CircularProgressIndicator()
                 }
                 is UserUiState.Success -> {
-                    UserDetails(user = uiState.user)
+                    UserDetails(user = currentState.user)
                 }
                 is UserUiState.Error -> {
                     Text(
-                        "Error: ${uiState.message}",
+                        "Error: ${currentState.message}",
                         color = MaterialTheme.colorScheme.error,
                         fontSize = 16.sp
                     )
                 }
             }
-        }
-        Button(
-            onClick = onFetchClicked,
-            modifier = Modifier.fillMaxWidth(),
-            enabled = uiState !is UserUiState.Loading // Disable button while loading
-        ) {
-            Text(text = "Fetch User Data", fontSize = 16.sp)
         }
     }
 }

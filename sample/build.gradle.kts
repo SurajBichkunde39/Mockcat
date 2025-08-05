@@ -74,4 +74,7 @@ dependencies {
 
     // leak
     implementation(libs.leakcanary.android)
+
+    // Todo: Convert this to debug and release.
+    implementation(project(":mockcat-core"))
 }
